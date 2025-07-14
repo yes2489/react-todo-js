@@ -1,10 +1,8 @@
-// App이라는 이름의 함수형 컴포넌트
 import { useState } from "react";
 import TodoBody from "./components/todos/TodoBody";
 import TodoHeader from "./components/todos/TodoHeader";
 import DefaultLayout from "./layouts/DefaultLayout";
 
-// 서버에서 받아온 데이터라고 가정
 const dummyTodos = [
   {
     id: 1,
@@ -26,36 +24,34 @@ const dummyTodos = [
   },
 ];
 
-// 해당 컴포넌트의 파일명은 App.jsx(js)로 만듦
 function App() {
-  {
-    /*children prop 참고자료
-     합성 vs 상속(https://ko.legacy.`reactjs.org/docs/composition-vs-inheritance.html) */
-  }
-
-  // dummyTodos를 App.jsx가 관리하는 하나의 상태로 등록
-  // 초기 값은 dummyTodos
-  // 여기서의 todos는 상태값
   const [todos, setTodos] = useState(dummyTodos);
+  console.log(todos);
 
   // 1. 할일 등록 기능
-  // TodoForm으로부터 전달받은 할일 객체를 가지고 todos 배열의 뒤쪽에 추가하는 로직
   const addTodoHandler = (todo) => {
-    console.log(todo); // TodoForm으로부터 입력된 값들을 잘 전달받았는지
-
-    // TODO: 배열에 추가하는 로직
     const newTodo = {
-      id: self.crypto.randomUUID(), // ID 식별용 값
+      id: self.crypto.randomUUID(),
       ...todo,
     };
+    const updatedTodos = [...todos, newTodo];
 
-    // 새롭게 업데이트할 할일 목록 데이터 생성
-    // ... 문법: 배열이나 객체의 값을 한 개씩 펼쳐주는 문법
-    // [...prev, new] =>새로운 배열 생성 문법
-    const updateTodos = [...todos, newTodo];
+    setTodos(updatedTodos);
+  };
 
-    // 할일 상태값 갱신
-    setTodos(updateTodos);
+  /**
+   * 2. 할일 수정 기능
+   * @param {*} updateTodo 새롭게 갱신할 할일 객체
+   */
+  const updateTodoHandler = (updateTodo) => {
+    console.log(updateTodo);
+
+    console.log("ttt");
+
+    const updatedTodos = todos.map((todo) =>
+      todo.id === updateTodo.id ? updateTodo : todo
+    );
+    setTodos(updatedTodos);
   };
 
   return (
@@ -77,11 +73,9 @@ function App() {
           />
         </h1>
       </header>
-
       <section className="max-w-xl m-4 mx-auto">
         <TodoHeader onAdd={addTodoHandler} />
-        {/* 할일 목록 */}
-        <TodoBody todos={todos} />
+        <TodoBody todos={todos} onUpdate={updateTodoHandler} />
       </section>
     </DefaultLayout>
   );

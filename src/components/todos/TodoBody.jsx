@@ -1,12 +1,10 @@
-import React from "react";
 import TodoItem from "./TodoItem";
 
-const TodoBody = ({ todos }) => {
+const TodoBody = ({ todos, onUpdate }) => {
   return (
     <ul>
-      {/* props로 내려받은 todos 배열로 map 연산 */}
-      {todos.map((todo) => (
-        <TodoItem todo={todo} key={todo.id} />
+      {todos.map((todoItem) => (
+        <TodoItem onUpdate={onUpdate} todo={todoItem} key={todoItem.id} />
       ))}
     </ul>
   );

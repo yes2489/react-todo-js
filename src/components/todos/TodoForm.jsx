@@ -1,36 +1,49 @@
 import { TODO_CATEGORY_ICON } from "@/constants/icon";
 import { useState } from "react";
-const TodoForm = ({ onClose, onAdd }) => {
-  // 각각의 입력 폼을 개별 상태로 관리 -> 폼 바인딩
-  const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
-  const [category, setCategory] = useState("TODO"); // 카테고리의 기본 값은 TODO
+const TodoForm = ({
+  actionTitle,
+  buttonText,
+  onAction,
+  onAdd,
+  onClose,
+  todo,
+}) => {
+  // 할일 등록 폼인지, 수정 폼인지 구분하기 위한 함수
+  const isNewTodoForm = actionTitle.startsWith("등록") ? true : false;
 
-  // 할일 등록 버튼을 눌렀을 때 동작시킬 핸들러
-  const addTodoHandler = () => {
-    // 등록할 할일 객체
-    const todo = {
-      title: title,
-      summary, // 프로퍼티와 변수 이름이 같을 경우 title만 작성해도 됨
+  const [title, setTitle] = useState(isNewTodoForm ? "" : todo.title);
+  const [summary, setSummary] = useState(isNewTodoForm ? "" : todo.summary);
+  const [category, setCategory] = useState(
+    isNewTodoForm ? "TODO" : todo.category
+  );
+
+  const todoActionHandler = () => {
+    const todoItem = {
+      title,
+      summary,
       category,
     };
 
-    // App.jsx로 보냄
-    onAdd(todo); // App.jsx에서 전달받은 함수(addTodoHandler)
+    if (isNewTodoForm) {
+      onAdd(todoItem);
+    } else {
+      todoItem.id = todo.id;
+      onAction(todoItem);
+    }
 
-    // 모달창 닫기
     onClose();
   };
 
   return (
     <>
-      <h3 className="text-3xl text-red-200">할일 등록</h3>
+      <h3 className="text-3xl text-red-200">할일 {actionTitle}</h3>
       <form className="my-2">
         <div>
           <label className="block mb-2 text-xl text-white" htmlFor="title">
             Title
           </label>
           <input
+            value={title}
             onChange={(event) => setTitle(event.target.value)}
             className="w-full p-2 border-[1px] border-gray-300 bg-gray-200 text-gray-900 rounded"
             type="text"
@@ -42,6 +55,7 @@ const TodoForm = ({ onClose, onAdd }) => {
             Summary
           </label>
           <textarea
+            value={summary}
             onChange={(event) => setSummary(event.target.value)}
             className="w-full p-2 border-[1px] border-gray-300 bg-gray-200 text-gray-900 rounded"
             id="summary"
@@ -53,6 +67,7 @@ const TodoForm = ({ onClose, onAdd }) => {
             Category
           </label>
           <select
+            value={category}
             onChange={(event) => setCategory(event.target.value)}
             className="w-full p-2 border-[1px] border-gray-300 bg-gray-200 text-gray-900 rounded"
             id="category"
@@ -74,11 +89,11 @@ const TodoForm = ({ onClose, onAdd }) => {
             Cancel
           </button>
           <button
-            onClick={addTodoHandler}
+            onClick={todoActionHandler}
             className="px-6 py-3 text-xl text-red-200"
             type="button"
           >
-            Add
+            {buttonText}
           </button>
         </div>
       </form>
