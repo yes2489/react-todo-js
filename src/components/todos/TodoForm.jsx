@@ -3,7 +3,7 @@ import { useState } from "react";
 const TodoForm = ({
   actionTitle,
   buttonText,
-  onAction,
+  onUpdate,
   onAdd,
   onClose,
   todo,
@@ -28,7 +28,7 @@ const TodoForm = ({
       onAdd(todoItem);
     } else {
       todoItem.id = todo.id;
-      onAction(todoItem);
+      onUpdate(todoItem);
     }
 
     onClose();

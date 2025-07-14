@@ -54,6 +54,12 @@ function App() {
     setTodos(updatedTodos);
   };
 
+  // 3. 할일 삭제 기능
+  const deleteTodoHandler = (deleteTodoId) => {
+    const deleteTodos = todos.filter((todo) => todo.id !== deleteTodoId);
+    setTodos(deleteTodos);
+  };
+
   return (
     <DefaultLayout>
       <header>
@@ -75,7 +81,11 @@ function App() {
       </header>
       <section className="max-w-xl m-4 mx-auto">
         <TodoHeader onAdd={addTodoHandler} />
-        <TodoBody todos={todos} onUpdate={updateTodoHandler} />
+        <TodoBody
+          todos={todos}
+          onUpdate={updateTodoHandler}
+          onDelete={deleteTodoHandler}
+        />
       </section>
     </DefaultLayout>
   );
