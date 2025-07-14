@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App이라는 이름의 함수형 컴포넌트
 
+import TodoBody from "./components/todos/TodoBody";
+import TodoHeader from "./components/todos/TodoHeader";
+import DefaultLayout from "./layouts/DefaultLayout";
+
+// 해당 컴포넌트의 파일명은 App.jsx(js)로 만듦
 function App() {
-  const [count, setCount] = useState(0)
-
+  {
+    /*children prop 참고자료
+     합성 vs 상속(https://ko.legacy.`reactjs.org/docs/composition-vs-inheritance.html) */
+  }
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <DefaultLayout>
+      <header>
+        <h1 className="pt-8 mx-auto text-red-200 max-w-max text-7xl">
+          <img
+            className="ml-4"
+            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Thought%20Balloon.png"
+            alt="Thought Balloon"
+            width="75"
+            height="75"
+          />
+          <img
+            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Seal.png"
+            alt="Seal"
+            width="75"
+            height="75"
+          />
+        </h1>
+      </header>
+
+      <section className="max-w-xl m-4 mx-auto">
+        <TodoHeader />
+
+        {/* 할일 목록 */}
+        <TodoBody />
+      </section>
+    </DefaultLayout>
+  );
 }
 
-export default App
+export default App;
