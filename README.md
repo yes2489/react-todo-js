@@ -32,3 +32,11 @@ src/
 ## 03. 할일 조회 기능 구현
 
 - TodoBody가 내부 todos 대신 props로 받은 todos를 렌더링하도록 수정
+
+## 04. 할일 추가 기능 구현
+
+- React Portal을 통해 Modal 컴포넌트 구현
+- 할일 등록 처리:
+  사용자가 모달에 입력한 Title, Summary 값을 받는 처리
+  Add 버튼을 클릭했을 때, 입력받은 값들을 App.jsx로 전달
+  App.jsx에 있는 todos 상태를 업데이트
