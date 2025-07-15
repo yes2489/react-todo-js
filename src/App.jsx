@@ -2,6 +2,7 @@ import { useState } from "react";
 import TodoBody from "./components/todos/TodoBody";
 import TodoHeader from "./components/todos/TodoHeader";
 import DefaultLayout from "./layouts/DefaultLayout";
+import { TodoProvider } from "./contexts/todoContext";
 
 const dummyTodos = [
   {
@@ -59,14 +60,41 @@ function App() {
   };
 
   // 4. 필터링 후 렌더링하는 기능
-  const filterTodos = () =>
-    selectedCategory === "ALL"
-      ? todos
-      : todos.filter((todo) => todo.category === selectedCategory);
-
-  const filteredTodos = filterTodos();
 
   return (
+    // Before
+    // <DefaultLayout>
+    //   <header>
+    //     <h1 className="pt-8 mx-auto text-red-200 max-w-max text-7xl">
+    //       <img
+    //         className="ml-4"
+    //         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Thought%20Balloon.png"
+    //         alt="Thought Balloon"
+    //         width="75"
+    //         height="75"
+    //       />
+    //       <img
+    //         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Seal.png"
+    //         alt="Seal"
+    //         width="75"
+    //         height="75"
+    //       />
+    //     </h1>
+    //   </header>
+    //   <section className="max-w-xl m-4 mx-auto">
+    //     <TodoHeader
+    //       onAdd={addTodoHandler}
+    //       categorty={selectedCategory}
+    //       onFilter={setFilter}
+    //     />
+    //     <TodoBody
+    //       todos={filteredTodos}
+    //       onUpdate={updateTodoHandler}
+    //       onDelete={deleteTodoHandler}
+    //     />
+    //   </section>
+    // </DefaultLayout>
+    // After
     <DefaultLayout>
       <header>
         <h1 className="pt-8 mx-auto text-red-200 max-w-max text-7xl">
@@ -86,16 +114,10 @@ function App() {
         </h1>
       </header>
       <section className="max-w-xl m-4 mx-auto">
-        <TodoHeader
-          onAdd={addTodoHandler}
-          categorty={selectedCategory}
-          onFilter={setFilter}
-        />
-        <TodoBody
-          todos={filteredTodos}
-          onUpdate={updateTodoHandler}
-          onDelete={deleteTodoHandler}
-        />
+        <TodoProvider>
+          <TodoHeader />
+          <TodoBody />
+        </TodoProvider>
       </section>
     </DefaultLayout>
   );

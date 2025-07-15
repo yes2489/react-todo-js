@@ -1,13 +1,7 @@
 import { TODO_CATEGORY_ICON } from "@/constants/icon";
 import { useState } from "react";
-const TodoForm = ({
-  actionTitle,
-  buttonText,
-  onUpdate,
-  onAdd,
-  onClose,
-  todo,
-}) => {
+import { useTodosDispatch } from "@/contexts/TodoContext";
+const TodoForm = ({ actionTitle, buttonText, onClose, todo }) => {
   // 할일 등록 폼인지, 수정 폼인지 구분하기 위한 함수
   const isNewTodoForm = actionTitle.startsWith("등록") ? true : false;
 
@@ -17,18 +11,29 @@ const TodoForm = ({
     isNewTodoForm ? "TODO" : todo.category
   );
 
+  // useTodosDispatch()를 통해 dispatch 함수 불러오기
+  const dispatch = useTodosDispatch();
+
   const todoActionHandler = () => {
-    const todoItem = {
-      title,
+    const updateTodo = {
+      title: title,
       summary,
       category,
     };
 
-    if (isNewTodoForm) {
-      onAdd(todoItem);
+    if (!isNewTodoForm) {
+      // 업데이트 로직일 경우,
+      updateTodo.id = todo.id;
+      dispatch({
+        type: "UPDATE",
+        updateTodo: { id: todo.id, title, summary, category },
+      });
     } else {
-      todoItem.id = todo.id;
-      onUpdate(todoItem);
+      // 할일 추가 로직일 경우,
+      dispatch({
+        type: "ADD",
+        newTodo: { id: self.crypto.randomUUID(), title, summary, category },
+      });
     }
 
     onClose();

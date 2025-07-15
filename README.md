@@ -53,3 +53,8 @@ src/
 ## 07. 필터링 기능 구현
 
 - 카테고리별 필터링 구현
+
+## 08. 리팩토링
+
+- ContextAPI(createContext, useContext) -> Props로 전달하던 방식 개선
+- useReducer를 통해 상태를 관리하는 로직을 하나의 함수(reducer)로 분리
