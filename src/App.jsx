@@ -26,7 +26,7 @@ const dummyTodos = [
 
 function App() {
   const [todos, setTodos] = useState(dummyTodos);
-  console.log(todos);
+  const [selectedCategory, setFilter] = useState("ALL");
 
   // 1. 할일 등록 기능
   const addTodoHandler = (todo) => {
@@ -46,8 +46,6 @@ function App() {
   const updateTodoHandler = (updateTodo) => {
     console.log(updateTodo);
 
-    console.log("ttt");
-
     const updatedTodos = todos.map((todo) =>
       todo.id === updateTodo.id ? updateTodo : todo
     );
@@ -59,6 +57,14 @@ function App() {
     const deleteTodos = todos.filter((todo) => todo.id !== deleteTodoId);
     setTodos(deleteTodos);
   };
+
+  // 4. 필터링 후 렌더링하는 기능
+  const filterTodos = () =>
+    selectedCategory === "ALL"
+      ? todos
+      : todos.filter((todo) => todo.category === selectedCategory);
+
+  const filteredTodos = filterTodos();
 
   return (
     <DefaultLayout>
@@ -80,9 +86,13 @@ function App() {
         </h1>
       </header>
       <section className="max-w-xl m-4 mx-auto">
-        <TodoHeader onAdd={addTodoHandler} />
+        <TodoHeader
+          onAdd={addTodoHandler}
+          categorty={selectedCategory}
+          onFilter={setFilter}
+        />
         <TodoBody
-          todos={todos}
+          todos={filteredTodos}
           onUpdate={updateTodoHandler}
           onDelete={deleteTodoHandler}
         />
