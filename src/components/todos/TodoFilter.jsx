@@ -1,7 +1,7 @@
 import React from "react";
 import { useTodos } from "@/contexts/todoContext";
 import { TODO_CATEGORY_ICON } from "@/constants/icon";
-import { useTodosDispatch } from "../../contexts/todoContext";
+import { useTodosDispatch } from "@/contexts/TodoContext";
 
 const TodoFilter = () => {
   const todos = useTodos();
