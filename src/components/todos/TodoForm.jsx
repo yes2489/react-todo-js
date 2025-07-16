@@ -26,7 +26,7 @@ const TodoForm = ({ actionTitle, buttonText, onClose, todo }) => {
       updateTodo.id = todo.id;
       dispatch({
         type: "UPDATE",
-        updateTodo: { id: todo.id, title, category: "PROGRESS", subtasks },
+        updateTodo: { id: todo.id, title, category, subtasks },
       });
     } else {
       // 할일 추가 로직일 경우,

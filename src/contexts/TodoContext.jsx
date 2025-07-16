@@ -35,6 +35,17 @@ export const TodoProvider = ({ children }) => {
 export const useTodos = () => useContext(TodoContext);
 export const useTodosDispatch = () => useContext(TodoDispatchContext);
 
+const getCategoryBySubtasks = (subtasks) => {
+  const total = subtasks.length;
+  // 완료된 서브태스크 수에 따라 전체 todo의 category 자동 판별
+  const doneCount = subtasks.filter((s) => s.done).length;
+  let newCategory = "TODO"; // 기본값
+  if (doneCount === total) newCategory = "DONE";
+  else if (doneCount > 0) newCategory = "PROGRESS";
+
+  return newCategory;
+};
+
 // reducer 함수: todos 상태를 action에 따라 업데이트
 const reducer = (todos, action) => {
   // 현재 상태에서 data(할 일 목록), category(현재 필터 상태) 분리
@@ -52,7 +63,12 @@ const reducer = (todos, action) => {
       const { updateTodo } = action;
       // id가 일치하는 항목을 수정된 todo로 대체
       const updatedTodos = data.map((todo) =>
-        todo.id === updateTodo.id ? { ...updateTodo } : todo
+        todo.id === updateTodo.id
+          ? {
+              ...updateTodo,
+              category: getCategoryBySubtasks(updateTodo.subtasks ?? []),
+            }
+          : todo
       );
       return { data: updatedTodos, category };
 
@@ -77,31 +93,23 @@ const reducer = (todos, action) => {
       return { data: categoryUpdatedTodos, category };
 
     case "UPDATE_SUBTASK":
-      // 서브태스크(subtask)의 완료 상태를 업데이트하고,
-      // 해당 todo의 전체 category를 자동으로 변경하는 액션
       const { todoId, subtaskId, done } = action;
 
       const subtaskUpdatedTodos = data.map((todo) => {
         if (todo.id === todoId) {
-          // 해당 todo의 subtasks 중 특정 subtask만 완료 상태 변경
           const updatedSubtasks = todo.subtasks.map((subtask) =>
             subtask.id === subtaskId ? { ...subtask, done } : subtask
           );
 
-          // 완료된 서브태스크 수에 따라 전체 todo의 category 자동 판별
-          const doneCount = updatedSubtasks.filter((s) => s.done).length;
-          let newCategory = "TODO"; // 기본값
-          if (doneCount === updatedSubtasks.length) newCategory = "DONE";
-          else if (doneCount > 0) newCategory = "PROGRESS";
+          const newCategory = getCategoryBySubtasks(updatedSubtasks);
 
-          // 변경된 subtasks와 category를 반영한 todo 반환
           return {
             ...todo,
             subtasks: updatedSubtasks,
             category: newCategory,
           };
         }
-        return todo; // 대상이 아닌 todo는 그대로 반환
+        return todo;
       });
 
       return { data: subtaskUpdatedTodos, category };
