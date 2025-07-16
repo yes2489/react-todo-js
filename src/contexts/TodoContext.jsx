@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
+import { getCategoryBySubtasks } from "../utils/getCategoryBySubtasks";
 
 // 초기 데이터: localStorage에서 가져오거나 없으면 기본값
 function storeTodos() {
@@ -34,17 +35,6 @@ export const TodoProvider = ({ children }) => {
 // Context를 외부에서 쉽게 사용하도록 커스텀 훅 제공
 export const useTodos = () => useContext(TodoContext);
 export const useTodosDispatch = () => useContext(TodoDispatchContext);
-
-const getCategoryBySubtasks = (subtasks) => {
-  const total = subtasks.length;
-  // 완료된 서브태스크 수에 따라 전체 todo의 category 자동 판별
-  const doneCount = subtasks.filter((s) => s.done).length;
-  let newCategory = "TODO"; // 기본값
-  if (doneCount === total) newCategory = "DONE";
-  else if (doneCount > 0) newCategory = "PROGRESS";
-
-  return newCategory;
-};
 
 // reducer 함수: todos 상태를 action에 따라 업데이트
 const reducer = (todos, action) => {
