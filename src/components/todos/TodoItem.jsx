@@ -1,14 +1,10 @@
 import TodoForm from "./TodoForm";
-import React, { useState } from "react";
-import { createPortal } from "react-dom";
-import Modal from "@/components/ui/Modal";
 import IconButton from "../ui/IconButton";
 import { TODO_CATEGORY_ICON } from "@/constants/icon";
 import { useTodosDispatch } from "@/contexts/TodoContext";
+import NewModal from "../ui/NewModal";
 
-const TodoItem = ({ todo, onUpdate }) => {
-  const [openModal, open] = useState(false);
-  // TodoContext에서 상태를 변경할 함수를 불러오기
+const TodoItem = ({ todo }) => {
   const dispatch = useTodosDispatch();
 
   return (
@@ -24,7 +20,19 @@ const TodoItem = ({ todo, onUpdate }) => {
           </h2>
         </div>
         <div className="flex items-center gap-1">
-          <IconButton onClick={() => open(true)} icon={"✏️"} />
+          <NewModal>
+            {/* 모달 창을 열기 위한 컴포넌트 작성 부분 */}
+            <NewModal.Open>
+              <IconButton icon={"✏️"} />
+            </NewModal.Open>
+            <NewModal.Dialog>
+              <TodoForm
+                actionTitle={"수정"}
+                buttonText={"Update"}
+                todo={todo}
+              />
+            </NewModal.Dialog>
+          </NewModal>
           <IconButton
             onClick={() => dispatch({ type: "DELETE", id: todo.id })}
             icon={"🗑"}
@@ -51,7 +59,7 @@ const TodoItem = ({ todo, onUpdate }) => {
               />
               <span
                 className={`text-sm ${
-                  subtask.done ? "line-through text-gray-400" : "text-gray-100"
+                  subtask.done ? "line-through text-gray-400" : "text-gray-100 "
                 }`}
               >
                 {subtask.title}
@@ -60,20 +68,6 @@ const TodoItem = ({ todo, onUpdate }) => {
           ))}
         </ul>
       )}
-
-      {openModal &&
-        createPortal(
-          <Modal onClose={() => open(false)}>
-            <TodoForm
-              actionTitle={"수정"}
-              buttonText={"Update"}
-              onAction={onUpdate}
-              onClose={() => open(false)}
-              todo={todo}
-            />
-          </Modal>,
-          document.body
-        )}
     </li>
   );
 };

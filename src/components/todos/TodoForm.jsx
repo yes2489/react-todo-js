@@ -62,7 +62,7 @@ const TodoForm = ({ actionTitle, buttonText, onClose, todo }) => {
 
   return (
     <>
-      <h3 className="text-3xl text-red-200">할일 {actionTitle}</h3>
+      <h3 className="text-3xl text-purple-200">할일 {actionTitle}</h3>
       <form className="my-2">
         <div>
           <label className="block mb-2 text-xl text-white" htmlFor="title">
@@ -131,7 +131,7 @@ const TodoForm = ({ actionTitle, buttonText, onClose, todo }) => {
           </button>
           <button
             onClick={todoActionHandler}
-            className="px-6 py-3 text-xl text-red-200"
+            className="px-6 py-3 text-xl text-purple-200"
             type="button"
           >
             {buttonText}
